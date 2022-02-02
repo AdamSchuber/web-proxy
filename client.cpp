@@ -7,7 +7,13 @@
 
 #define PORT 8080
 
-using namespace std;
+class Client
+{
+public:
+
+private:
+
+};
 
 int main()
 {
