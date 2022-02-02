@@ -1,4 +1,11 @@
 #include "../include/client.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <unistd.h>
+#include <iostream>
+#include <arpa/inet.h>
+#include <stdexcept>
 
 Client::Client()
         : client{}, address{}, addr_size{}

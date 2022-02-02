@@ -1,4 +1,10 @@
 #include "../include/server.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <unistd.h>
+#include <iostream>
+#include <stdexcept>
 
 Server::Server()
     : address{}, listening{}, addr_size{sizeof(address)}
@@ -34,6 +40,6 @@ std::string Server::get_request()
 
     int valread = read(browser, buffer, 1024);
     request = buffer;
-    close(browser);
+    close(browser);             
     return request;
 }
