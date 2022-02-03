@@ -7,6 +7,8 @@
 #include <arpa/inet.h>
 #include <stdexcept>
 
+#define PORT 8080
+
 Client::Client()
         : client{}, address{}, addr_size{}
     {

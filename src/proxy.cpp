@@ -6,7 +6,7 @@
 
 using namespace std;
 
-string get_address(string & request);
+string get_address(string const& request);
 
 int main()
 {
@@ -26,7 +26,7 @@ int main()
     return 0;
 }
 
-string get_address(string & request)
+string get_address(string const& request)
 {
     stringstream ss{request};
     string adress_and_port{};
