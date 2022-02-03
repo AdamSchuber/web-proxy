@@ -6,6 +6,10 @@
 #include <iostream>
 #include <stdexcept>
 
+#define PORT 8080
+
+using namespace std;
+
 Server::Server()
     : address{}, listening{}, addr_size{sizeof(address)}
 {
@@ -26,6 +30,10 @@ Server::Server()
     if (listen(listening, SOMAXCONN) == 1)
         throw std::logic_error{"listen failed"};
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0a80eb4a038a890c944c5b71bb9142dd45825e23
 Server::~Server()
 {
     close(listening);
@@ -40,6 +48,10 @@ std::string Server::get_request()
 
     int valread = read(browser, buffer, 1024);
     request = buffer;
+<<<<<<< HEAD
     close(browser);             
+=======
+    close(browser);
+>>>>>>> 0a80eb4a038a890c944c5b71bb9142dd45825e23
     return request;
 }

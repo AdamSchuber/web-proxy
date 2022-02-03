@@ -17,7 +17,6 @@ public:
     ~Server();
 
     std::string get_request();
-
 private:
     char buffer[1024];
     struct sockaddr_in address;

@@ -1,7 +1,6 @@
-//#include "../include/server.h"
+#include "../include/server.h"
 #include "../include/client.h"
 #include <iostream>
-#include <netdb.h>
 #include <algorithm>
 #include <sstream>
 
@@ -11,7 +10,10 @@ string get_address(string & request);
 
 int main()
 {
-   /*  Server server{};
+    int a;
+    cout << "hej" << endl;
+    cin >> a;
+    /* Server server{};
     string request{server.get_request()};
 
     // decode IP-address
@@ -22,9 +24,9 @@ int main()
     // initiate client with decoded information
     Client client{};
     const char* message{request.c_str()};
-    client.transmit(message);
+    client.transmit(message); */
 
-    return 0; */
+    return 0;
 }
 
 string get_address(string & request)

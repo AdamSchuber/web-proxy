@@ -16,7 +16,6 @@ class Client
 public:
     Client();
     ~Client();
-
     void transmit(const char* message);
 
 private:
