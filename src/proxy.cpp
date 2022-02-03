@@ -1,5 +1,5 @@
-#include "server.h"
-#include "client.h"
+#include "../include/server.h"
+#include "../include/client.h"
 #include <iostream>
 #include <netdb.h>
 #include <algorithm>
