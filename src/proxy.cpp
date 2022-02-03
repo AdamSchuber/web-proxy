@@ -10,10 +10,7 @@ string get_address(string & request);
 
 int main()
 {
-    int a;
-    cout << "hej" << endl;
-    cin >> a;
-    /* Server server{};
+    Server server{};
     string request{server.get_request()};
 
     // decode IP-address
@@ -24,7 +21,7 @@ int main()
     // initiate client with decoded information
     Client client{};
     const char* message{request.c_str()};
-    client.transmit(message); */
+    client.transmit(message);
 
     return 0;
 }
