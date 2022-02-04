@@ -44,5 +44,6 @@
         "sstream": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "git.ignoreLimitWarning": true
 }

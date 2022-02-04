@@ -9,15 +9,12 @@
 #include <arpa/inet.h>
 #include <stdexcept>
 
-#define PORT 8080
-
 class Client
 {
 public:
-    Client();
+    Client(std::string const& ip, int const& port);
     ~Client();
-    void transmit(const char* message);
-
+    std::string transmit(const char* message);
 private:
     char buffer[1024];
     int client;
