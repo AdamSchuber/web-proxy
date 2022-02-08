@@ -6,8 +6,6 @@
 #include <iostream>
 #include <stdexcept>
 
-#define PORT 8080
-
 using namespace std;
 
 Server::Server()

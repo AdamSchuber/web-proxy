@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Client::Client(string const& ip, int const& port)
+Client::Client(string const& ip)
         : client{}, address{}, addr_size{}
     {
         if ((client = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -18,8 +18,7 @@ Client::Client(string const& ip, int const& port)
         std::cout << "Client socket has been created... " << std::endl;
 
         address.sin_family = AF_INET;
-        address.sin_port = htons(port);
-
+        address.sin_port = htons(80);       //PORT = 80
 
         // Convert IPv4 and IPv6 addresses from text to binary form
         if (inet_pton(AF_INET, ip.c_str(), &address.sin_addr) <= 0)

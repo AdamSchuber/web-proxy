@@ -12,7 +12,7 @@
 class Client
 {
 public:
-    Client(std::string const& ip, int const& port);
+    Client(std::string const& ip);
     ~Client();
     std::string transmit(const char* message);
 private:
