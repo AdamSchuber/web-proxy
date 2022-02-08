@@ -33,17 +33,24 @@ Client::Client(string const& ip)
     {
         close(client);
     }
-
+    
     string Client::transmit(const char* message)
     {
         send(client, message, strlen(message), 0);
         std::cout << "Message sent..." << std::endl;
 
-        int valread = read(client, buffer, 1024);
-        cout << "Message recived...";
+        // int reading = read(client, buffer, 2048);
+        // cout << buffer << endl;
+        
+        while (true)
+        {
+            ssize_t check{read(client, buffer, 2048)};
+            cout << buffer << endl;
+            if (check <= 0)
+                break;
+        }
 
-        // printf("%s\n", buffer);
-        cout << buffer << endl;
+        //cout << "Message received..." << endl;
 
         return buffer;
     }

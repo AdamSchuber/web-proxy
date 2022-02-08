@@ -20,15 +20,18 @@ int main()
 
         // decode IP-address
     string address{get_address(request)};
-    cout << "address:" << address << "hello" << endl;
     string ip{get_ip_from_address(address.c_str())};
 
         // initiate client with decoded information
     Client client{ip};
 
+        // get packet from web-server
     const char* message{request.c_str()};
     string packet = client.transmit(message);
     
+        // send packet to browser from proxy-server
+    server.transmit(packet.c_str());
+
     return 0;
 }
 
@@ -62,7 +65,7 @@ string get_address(string const& request)
         auto start_it{search(buffer.begin(), buffer.end(), host.begin(), host.end())};
         if ( start_it != buffer.end())
         {
-            string str{start_it+6, buffer.end()};
+            string str{start_it+6, buffer.end()-1};
             address = str;
         }
     }
