@@ -17,10 +17,11 @@ public:
     ~Server();
 
     std::string get_request();
+    void transmit(const char* packet);
 private:
     char buffer[16384];
     struct sockaddr_in address;
-    int listening;
+    int listening, browser;
     socklen_t addr_size{};
     int one{1};
 };

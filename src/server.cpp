@@ -6,12 +6,10 @@
 #include <iostream>
 #include <stdexcept>
 
-#define PORT 8080
-
 using namespace std;
 
 Server::Server()
-    : address{}, listening{}, addr_size{sizeof(address)}
+    : address{}, listening{}, browser{}, addr_size{sizeof(address)}
 {
     if ((listening = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw std::logic_error{"Error stablishing socket..."};
@@ -38,12 +36,20 @@ Server::~Server()
 std::string Server::get_request()
 {
     std::string request{};
-    int browser = accept(listening, (struct sockaddr *)&address, &addr_size);
+    browser = accept(listening, (struct sockaddr *)&address, &addr_size);
     if (browser < 0)
         throw std::logic_error{"Error on accepting... "};
 
     int valread = read(browser, buffer, 16384);
     request = buffer;
-    close(browser);
     return request;
+}
+
+void Server::transmit(const char* packet)
+{
+    if (send(browser, packet, strlen(packet), 0) == 1)
+        throw std::logic_error{"Send failed"};
+
+    std::cout << "Packet sent..." << std::endl;    
+    close(browser);
 }
