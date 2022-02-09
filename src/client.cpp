@@ -41,13 +41,12 @@ Client::Client(string const& ip)
 
         // int reading = read(client, buffer, 2048);
         // cout << buffer << endl;
-        
-        while (true)
+        int byte_counter{};
+        while (byte_counter < 174693)
         {
             ssize_t check{read(client, buffer, 2048)};
             cout << buffer << endl;
-            if (check <= 0)
-                break;
+            byte_counter += sizeof(buffer);
         }
 
         //cout << "Message received..." << endl;
