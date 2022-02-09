@@ -37,7 +37,7 @@ int main()
 string get_ip_from_address(const char* address)
 {
     struct addrinfo hints, *res;
-    char host[256];
+    char host[16384];
     
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_INET;
@@ -59,22 +59,33 @@ void split_address(string & address, string & port)
     port = temp2;
 }
 
-string get_address(string const& request)
-{
-    stringstream ss{request};
-    string address_and_port{};
-    string buffer{};
-    const string host{"Host:"};
+// string get_address(string const& request)
+// {
+//     stringstream ss{request};
+//     string address_and_port{};
+//     string buffer{};
+//     const string host{"Host:"};
     
-        // Get host line
-    while(getline(ss, buffer))
-    {
-        auto start_it{search(buffer.begin(), buffer.end(), host.begin(), host.end())};
-        if ( start_it != buffer.end())
-        {
-            string str{start_it+6, buffer.end()};
-            address_and_port = str;
-        }
-    }
+//         // Get host line
+//     while(getline(ss, buffer))
+//     {
+//         auto start_it{search(buffer.begin(), buffer.end(), host.begin(), host.end())};
+//         if ( start_it != buffer.end())
+//         {
+//             string str{start_it+6, buffer.end()};
+//             address_and_port = str;
+//         }
+//     }
+//     return address_and_port;
+// }
+
+string get_address(string const& request)
+{    
+    auto it = find(request.begin(), request.end(), 'H');
+    auto it2 = find(it, request.end(), '\'');
+    string address_and_port{it+6, it2};
+
+    cout << address_and_port << endl;
+
     return address_and_port;
 }

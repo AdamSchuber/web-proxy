@@ -40,11 +40,11 @@ Client::Client(string const& ip, int const& port)
         send(client, message, strlen(message), 0);
         std::cout << "Message sent..." << std::endl;
 
-        int valread = read(client, buffer, 1024);
+        int valread = read(client, buffer, 16384);
         cout << "Message recived...";
 
-        // printf("%s\n", buffer);
-        cout << buffer << endl;
+        printf("%s\n", buffer);
+        // cout << buffer << endl;
 
         return buffer;
     }

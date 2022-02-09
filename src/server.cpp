@@ -42,7 +42,7 @@ std::string Server::get_request()
     if (browser < 0)
         throw std::logic_error{"Error on accepting... "};
 
-    int valread = read(browser, buffer, 1024);
+    int valread = read(browser, buffer, 16384);
     request = buffer;
     close(browser);
     return request;

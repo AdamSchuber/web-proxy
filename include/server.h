@@ -18,7 +18,7 @@ public:
 
     std::string get_request();
 private:
-    char buffer[1024];
+    char buffer[16384];
     struct sockaddr_in address;
     int listening;
     socklen_t addr_size{};
