@@ -6,6 +6,7 @@
 #include <iostream>
 #include <arpa/inet.h>
 #include <stdexcept>
+#include <vector> //temporär
 
 using namespace std;
 
@@ -42,14 +43,22 @@ Client::Client(string const& ip)
         // int reading = read(client, buffer, 2048);
         // cout << buffer << endl;
         int byte_counter{};
-        while (byte_counter < 174693)
+        vector<int> bytes_read{};
+        while (byte_counter < 170970)
         {
-            ssize_t check{read(client, buffer, 2048)};
+            ssize_t check{read(client, buffer, 4096)};
             cout << buffer << endl;
+            bytes_read.push_back(sizeof(buffer));
             byte_counter += sizeof(buffer);
+        }
+
+        for(int i{}; i < bytes_read.size(); ++i)
+        {
+            cout << "byte " << i << ": " << bytes_read.at(i) << endl;
         }
 
         //cout << "Message received..." << endl;
 
         return buffer;
     }
+    
