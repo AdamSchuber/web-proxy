@@ -16,7 +16,7 @@ public:
     ~Client();
     std::string transmit(const char* message);
 private:
-    char buffer[2048];
+    char buffer[10000];
     int client;
     struct sockaddr_in address;
     socklen_t addr_size;
