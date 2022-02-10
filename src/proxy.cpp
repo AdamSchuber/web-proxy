@@ -38,7 +38,7 @@ int main()
 string get_ip_from_address(const char* address)
 {
     struct addrinfo hints, *res;
-    char host[256];
+    char host[16384];
     
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_INET;
