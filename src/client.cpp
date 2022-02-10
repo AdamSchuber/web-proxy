@@ -49,9 +49,9 @@ string Client::transmit(const char *message)
     string packet{};
     while (check > 0)
     {
-        bzero((char *)buffer, 10000);
-        usleep(100);
-        check = recv(client, buffer, 10000, 0);
+        bzero((char *)buffer, sizeof(buffer));
+        //usleep(100);
+        check = recv(client, buffer, sizeof(buffer), 0);
         printf("UNF_REQ: Received %d bytes\n", check);
         cout << buffer;
         packet += buffer;
