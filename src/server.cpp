@@ -53,3 +53,12 @@ void Server::transmit(const char* packet)
     std::cout << "Packet sent..." << std::endl;    
     close(browser);
 }
+
+/* 
+    Ta bort gzip i Firefox
+
+    about:config        
+    network.http.accept-encoding            gzip, deflate   <---- ta bort
+    network.http.accept-encoding.secure     gzip, deflate   <---- ta bort
+
+ */

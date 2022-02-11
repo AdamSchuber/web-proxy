@@ -12,9 +12,10 @@
 class Client
 {
 public:
-    Client(std::string const& ip);
+    Client();
     ~Client();
     std::string transmit(const char* message);
+    void initialize_client(std::string const& ip);
 private:
     char buffer[10000];
     int client;

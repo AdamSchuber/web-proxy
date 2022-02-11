@@ -16,6 +16,25 @@ string get_ip_from_address(const char*  address);
 int main()
 {
     Server server{};
+    Client client{};
+    do
+    {
+        // decode IP-address
+        string request{server.get_request()};
+        string address{get_address(request)};
+        string ip{get_ip_from_address(address.c_str())};
+        
+        // initiate client with decoded information
+        client.initialize_client(ip);
+
+        const char* message{request.c_str()};
+        string packet = client.transmit(message);
+    
+        // send packet to browser from proxy-server
+        server.transmit(packet.c_str());
+    } while(true);
+
+/*     Server server{};
     string request{server.get_request()};
 
         // decode IP-address
@@ -30,7 +49,7 @@ int main()
     string packet = client.transmit(message);
     
         // send packet to browser from proxy-server
-    server.transmit(packet.c_str());
+    server.transmit(packet.c_str()); */
 
     return 0;
 }
