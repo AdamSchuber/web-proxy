@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <iostream>
 #include <stdexcept>
+#include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -47,9 +49,52 @@ std::string Server::get_request()
 
 void Server::transmit(const char* packet)
 {
-    if (send(browser, packet, strlen(packet), 0) == 1)
+    int temp = sizeof(packet);
+    int* size = &temp;
+    int n{};
+    if (contains_image(packet))
+        n = sendall(browser, packet, size);
+
+    if (send(browser, packet, *size, 0) == 1)
         throw std::logic_error{"Send failed"};
 
     std::cout << "Packet sent..." << std::endl;    
-    close(browser);
+}
+
+bool Server::contains_image(const char* packet)
+{
+    stringstream ss{packet};
+    string buffer{};
+    const string image{"image/jpeg"};
+
+    // contains image?
+    while (getline(ss, buffer))
+    {
+        auto start_it{search(buffer.begin(), buffer.end(), image.begin(), image.end())};
+        if (start_it != buffer.end())
+            return true;    //It does!
+    }
+    return false; 
+}
+
+int Server::sendall(int socket, const char *packet, int *len)
+{
+    int total = 0;        // how many bytes we've sent
+    int bytesleft = *len; // how many we have left to send
+    int n;
+
+    while (total < *len)
+    {
+        n = send(socket, packet + total, bytesleft, 0);
+        if (n == -1)
+        {
+            break;
+        }
+        total += n;
+        bytesleft -= n;
+    }
+
+    *len = total; // return number actually sent here
+
+    return n == -1 ? -1 : 0; // return -1 on failure, 0 on success
 }

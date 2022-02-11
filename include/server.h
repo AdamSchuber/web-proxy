@@ -18,6 +18,8 @@ public:
 
     std::string get_request();
     void transmit(const char* packet);
+    bool contains_image(const char* packet);
+    int sendall(int socket, const char* packet, int *len);
 private:
     char buffer[16384];
     struct sockaddr_in address;

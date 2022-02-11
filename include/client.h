@@ -12,12 +12,14 @@
 class Client
 {
 public:
-    Client(std::string const& ip);
+    Client();
     ~Client();
-    std::string transmit(const char* message);
+    char* transmit(const char* message);
+    void initialize_client(std::string const& ip);
 private:
     char buffer[10000];
     int client;
+    std::string ip;
     struct sockaddr_in address;
     socklen_t addr_size;
 };

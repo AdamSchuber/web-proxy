@@ -15,24 +15,28 @@ string get_ip_from_address(const char *address);
 
 int main()
 {
+    Server server{};
+    Client client{};
+    char packet[200000];
     do
     {
-        Server server{};
-        string request{server.get_request()};
-
         // decode IP-address
+        string request{server.get_request()};
         string address{get_address(request)};
         string ip{get_ip_from_address(address.c_str())};
-
+        
         // initiate client with decoded information
-        Client client{ip};
+        client.initialize_client(ip);
 
         // get packet from web-server
         const char *message{request.c_str()};
-        string packet = client.transmit(message);
+        bzero((char *)packet, sizeof(packet));
+        //strcat(packet, client.transmit(message));
+        //client.transmit(message)
+        printf(client.transmit(message));
 
         // send packet to browser from proxy-server
-        server.transmit(packet.c_str());
+        server.transmit(packet);
     } while(true);
 
     return 0;
