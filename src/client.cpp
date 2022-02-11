@@ -41,20 +41,14 @@ string Client::transmit(const char *message)
     send(client, message, strlen(message), 0);
     std::cout << "Message sent..." << std::endl;
 
-    // int reading = read(client, buffer, 2048);
-    // cout << buffer << endl;
-    // bzero((char *)buffer, 200000);
-    // ssize_t check{recv(client, buffer, 200000, 0)};
     int check{1};
     string packet{};
     while (check > 0)
     {
         bzero((char *)buffer, sizeof(buffer));
-        //usleep(100);
         check = recv(client, buffer, sizeof(buffer), 0);
         printf("UNF_REQ: Received %d bytes\n", check);
-        cout << buffer;
-        packet += buffer;
+        packet = packet + buffer;
 
         if (check < 0) {
             fprintf(stderr, "%d: Unable to recieve data from server.\n", errno);
@@ -63,47 +57,49 @@ string Client::transmit(const char *message)
     }
     cout << "Message received..." << endl;
 
+    cout << packet << endl;
     return packet;
 }
 
-// // If our proxy doesn't get a HTTP/1.1 or 1.0 GET request,
-// // we process the request without any filtering.
-// void unfiltered_request(int request_fd, char *buffer, int client_fd)
-// {
-//     int n = 1;
-//     printf("Doing unfiltered request\n");
-//     while (n > 0)
-//     {
-//         bzero((char *)buffer, 10000);
-//         n = recv(request_fd, buffer, 10000, 0);
-//         printf("UNF_REQ: Received %d bytes\n", n);
+// HTTP/1.1 200 OK
+// Date: Fri, 11 Feb 2022 08:15:23 GMT
+// Server: Apache/2.4.6 (CentOS) mod_auth_gssapi/1.5.1 mod_nss/1.0.14 NSS/3.28.4 mod_wsgi/3.4 Python/2.7.5
+// Last-Modified: Fri, 15 Jan 2021 11:35:43 GMT
+// ETag: "2c5-5b8eec5c5e21a"
+// Accept-Ranges: bytes
+// Content-Length: 709
+// Keep-Alive: timeout=5, max=100
+// Connection: Keep-Alive
+// Content-Type: text/html; charset=UTF-8
 
-//         if (n < 0)
-//         {
-//             fprintf(stderr, "%d: Unable to recieve data from server.\n", errno);
-//             close(request_fd);
-//             return;
-//         }
+// <html>
 
-//         sendall(client_fd, buffer, &n);
-//         printf("UNF_REQ: Sent %d bytes\n", n);
-//     }
+// <title>
+// HTML page with a linked photo of Smiley for Fake News assignment
+// </title>
 
-//     close(request_fd);
-//     return;
-// }
+// <body>
 
- /*  int byte_counter{};
-    vector<int> bytes_read{};
-    while (byte_counter < 170970)
-    {
-        ssize_t check{read(client, buffer, 4096)};
-        cout << buffer << endl;
-        bytes_read.push_back(sizeof(buffer));
-        byte_counter += sizeof(buffer);
-    }
+// <h1>An HTML page with link to image of Smiley from Stockholm</h1>
 
-    for(int i{}; i < bytes_read.size(); ++i)
-    {
-        cout << "byte " << i << ": " << bytes_read.at(i) << endl;
-    } */
+// <p>
+//   This is a more complicated Web page, with a link to a photo.
+//   It tells a simple story about our yellow friend Smiley,
+//   who is from Stockholm. Smiley is round, I think.
+// </p>
+// <p>
+// Here is an <a href="./smiley.jpg">image</a> of Smiley from Stockholm.
+// </p>
+// <p>
+// Without your proxy, you should be able to view this page just fine.
+// </p>
+// <p>
+// With your proxy, this page should look a bit different,
+// with all mentions of Smiley from Stockholm
+// being changed into something else.
+// The page should still be formatted properly.
+// </p>
+
+// </body>
+
+// </html>
