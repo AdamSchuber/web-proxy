@@ -33,7 +33,6 @@ int main()
         bzero((char *)packet, sizeof(packet));
         //strcat(packet, client.transmit(message));
         //client.transmit(message)
-        printf(client.transmit(message));
 
         // send packet to browser from proxy-server
         server.transmit(packet);
