@@ -47,21 +47,29 @@ std::string Server::get_request()
     return request;
 }
 
-void Server::transmit(const char* packet)
+void Server::transmit(const char *packet)
 {
-    int temp = sizeof(packet);
-    int* size = &temp;
+    int temp = strlen(packet);
+    int *size = &temp;
     int n{};
-    if (contains_image(packet))
-        n = sendall(browser, packet, size);
 
-    if (send(browser, packet, *size, 0) == 1)
-        throw std::logic_error{"Send failed"};
+    n = sendall(browser, packet, size);
 
-    std::cout << "Packet sent..." << std::endl;    
+    // if (contains_image(packet))
+    // {
+    //     n = sendall(browser, packet, size);
+    // }
+    // else if (send(browser, packet, strlen(packet), 0) == 1)
+    // {
+    //     throw std::logic_error{"Send failed"};
+    // }
+
+    printf(packet);
+
+    std::cout << "Packet sent..." << std::endl;
 }
 
-bool Server::contains_image(const char* packet)
+bool Server::contains_image(const char *packet)
 {
     stringstream ss{packet};
     string buffer{};
@@ -72,9 +80,9 @@ bool Server::contains_image(const char* packet)
     {
         auto start_it{search(buffer.begin(), buffer.end(), image.begin(), image.end())};
         if (start_it != buffer.end())
-            return true;    //It does!
+            return true; // It does!
     }
-    return false; 
+    return false;
 }
 
 int Server::sendall(int socket, const char *packet, int *len)

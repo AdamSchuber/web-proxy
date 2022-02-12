@@ -41,13 +41,12 @@ void Client::initialize_client(string const &ip)
     std::cout << "Awaiting confirmation from server... " << std::endl;
 }
 
-char *Client::transmit(const char *message)
+void Client::transmit(const char *message, char *packet)
 {
     send(client, message, strlen(message), 0);
     std::cout << "Message sent..." << std::endl;
 
     int check{1};
-    char packet[200000];
     while (check > 0)
     {
         bzero((char *)buffer, sizeof(buffer));
@@ -63,8 +62,6 @@ char *Client::transmit(const char *message)
         }
     }
     cout << "Message received..." << endl;
-
-    return packet;
 }
 
 // HTTP/1.1 200 OK

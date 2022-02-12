@@ -14,7 +14,7 @@ class Client
 public:
     Client();
     ~Client();
-    char* transmit(const char* message);
+    void transmit(const char* message, char *packet);
     void initialize_client(std::string const& ip);
 private:
     char buffer[10000];

@@ -17,26 +17,23 @@ int main()
 {
     Server server{};
     Client client{};
-    char packet[200000];
-    do
-    {
-        // decode IP-address
-        string request{server.get_request()};
-        string address{get_address(request)};
-        string ip{get_ip_from_address(address.c_str())};
-        
-        // initiate client with decoded information
-        client.initialize_client(ip);
+    char packet[500000];
 
-        // get packet from web-server
-        const char *message{request.c_str()};
-        bzero((char *)packet, sizeof(packet));
-        //strcat(packet, client.transmit(message));
-        //client.transmit(message)
+    // decode IP-address
+    string request{server.get_request()};
+    string address{get_address(request)};
+    string ip{get_ip_from_address(address.c_str())};
 
-        // send packet to browser from proxy-server
-        server.transmit(packet);
-    } while(true);
+    // initiate client with decoded information
+    client.initialize_client(ip);
+
+    // get packet from web-server
+    const char *message{request.c_str()};
+    // bzero((char *)packet, sizeof(packet));
+    client.transmit(message, packet);
+
+    // send packet to browser from proxy-server
+    server.transmit(packet);
 
     return 0;
 }
