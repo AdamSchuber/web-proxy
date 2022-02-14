@@ -8,16 +8,17 @@
 #include <iostream>
 #include <arpa/inet.h>
 #include <stdexcept>
+#include <vector>
 
 class Client
 {
 public:
     Client();
     ~Client();
-    void transmit(const char* message, char *packet);
+    ssize_t transmit(const char* message, char* packet);
     void initialize_client(std::string const& ip);
 private:
-    char buffer[10000];
+    char buffer[500000];
     int client;
     std::string ip;
     struct sockaddr_in address;

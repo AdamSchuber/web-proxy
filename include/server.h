@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 
 #define PORT 8080
 
@@ -17,11 +18,11 @@ public:
     ~Server();
 
     std::string get_request();
-    void transmit(const char* packet);
+    void transmit(const char* packet, ssize_t const& size);
     bool contains_image(const char* packet);
     int sendall(int socket, const char* packet, int *len);
 private:
-    char buffer[16384];
+    char buffer[8192];
     struct sockaddr_in address;
     int listening, browser;
     socklen_t addr_size{};

@@ -19,21 +19,21 @@ int main()
     Client client{};
     char packet[500000];
 
-    // decode IP-address
+        // Decode IP-address
     string request{server.get_request()};
     string address{get_address(request)};
     string ip{get_ip_from_address(address.c_str())};
 
-    // initiate client with decoded information
+        // Initiate client with decoded information
     client.initialize_client(ip);
 
-    // get packet from web-server
+        // Get packet from web-server
     const char *message{request.c_str()};
-    // bzero((char *)packet, sizeof(packet));
-    client.transmit(message, packet);
+    bzero((char *)packet, sizeof(packet));
+    ssize_t size{client.transmit(message, packet)};
 
-    // send packet to browser from proxy-server
-    server.transmit(packet);
+        // Send packet to browser from proxy-server
+    server.transmit(packet, size);
 
     return 0;
 }
