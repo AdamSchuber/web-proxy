@@ -54,12 +54,14 @@ void Server::transmit(const char* packet, ssize_t const& size)
 {
         // Send full packet
     if (send(browser, packet, size, MSG_WAITALL) < 0)
-        throw std::logic_error{"Send failed"};
+        throw logic_error{"Send failed"};
     
 
     cout << packet << endl;
     std::cout << "Packet sent..." << std::endl;
 }
+
+
 
 // bool Server::contains_image(const char *packet)
 // {
