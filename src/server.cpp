@@ -37,11 +37,10 @@ Server::~Server()
     close(listening);
 }
 
-std::string Server::get_request()
+string Server::get_request()
 {
     string request{};
     browser = accept(listening, (struct sockaddr *)&address, &addr_size);
-    
     if (browser < 0)
         throw logic_error{"Error on accepting... "};
 
@@ -55,9 +54,8 @@ void Server::transmit(const char* packet, ssize_t const& size)
         // Send full packet
     if (send(browser, packet, size, MSG_WAITALL) < 0)
         throw logic_error{"Send failed"};
-    
 
-    cout << packet << endl;
+    // cout << packet << endl;
     std::cout << "Packet sent..." << std::endl;
 }
 

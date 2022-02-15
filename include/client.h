@@ -14,9 +14,9 @@ class Client
 {
 public:
     Client();
-    ~Client();
     ssize_t transmit(const char* message, char* packet);
-    void initialize_client(std::string const& ip);
+    void connect_to_webserver(std::string const& ip);
+    void close_webserver();
 private:
     char buffer[500000];
     int client;

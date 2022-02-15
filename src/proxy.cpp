@@ -6,41 +6,85 @@
 #include <iostream>
 #include <algorithm>
 #include <sstream>
-
+#include <stdexcept>
 using namespace std;
 
 string get_address(string const &request);
 void split_address(string &address, string &port);
 string get_ip_from_address(const char *address);
+bool is_ok(const char *packet);
+bool is_not_modified(const char *packet);
 
 int main()
 {
+    Server server{};
+    Client client{};
     while (true)
     {
-        Server server{};
-        Client client{};
         char packet[500000];
+        string request{}, address{}, ip{};
+        do
+        {
+            try
+            {
+                // Decode IP-address
+                request = server.get_request();
+                address = get_address(request);
+                ip = get_ip_from_address(address.c_str());
 
-        // Decode IP-address
-        string request{server.get_request()};
-        string address{get_address(request)};
-        string ip{get_ip_from_address(address.c_str())};
-
-        cout << ip << endl;
-
-        // Initiate client with decoded information
-        client.initialize_client(ip);
+                // Initiate client with decoded information until valid address
+                client.connect_to_webserver(ip);
+                break;
+            }
+            catch (const exception &e)
+            {
+                cout << address << endl;
+                cerr << "Invalid address..." << endl;
+            }
+        } while (true);
 
         // Get packet from web-server
         const char *message{request.c_str()};
         bzero((char *)packet, sizeof(packet));
         ssize_t size{client.transmit(message, packet)};
 
-        // Send packet to browser from proxy-server
-        server.transmit(packet, size);
-    }
+        //cout << packet << endl;
 
+        // Send packet to browser from proxy-server
+        if (is_ok(packet) || is_not_modified(packet))
+            server.transmit(packet, size);
+
+        client.close_webserver();
+    }
     return 0;
+}
+
+bool is_ok(const char *packet)
+{
+    stringstream ss{packet};
+    string buffer{};
+    string OK{"200 OK"};
+    getline(ss, buffer);
+    auto start_it{search(buffer.begin(), buffer.end(), OK.begin(), OK.end())};
+    if (start_it != buffer.end())
+    {
+        return true;
+    }
+    return false;
+}
+
+bool is_not_modified(const char *packet)
+{
+    stringstream ss{packet};
+    string buffer{};
+    string not_modified{"304"};
+    getline(ss, buffer);
+    auto start_it{search(buffer.begin(), buffer.end(), not_modified.begin(), not_modified.end())};
+    if (start_it != buffer.end())
+    {
+        return true;
+    }
+    return false;
 }
 
 string get_ip_from_address(const char *address)
