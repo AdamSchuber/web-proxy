@@ -30,13 +30,13 @@ void Client::connect_to_webserver(string const &ip)
 {
     // Convert IPv4 and IPv6 addresses from text to binary form
     if (inet_pton(AF_INET, ip.c_str(), &address.sin_addr) <= 0)
-        throw logic_error{"Invaild adress..."};
+        throw logic_error{"(connect_to_webserver) Invalid address..."};
 
     // Connect client
     if (connect(client, (struct sockaddr *)&address, sizeof(address)) == -1)
-        throw logic_error{"Connection Failed..."};
+        throw logic_error{"Connection Failed to webserver..."};
 
-    cout << "Awaiting confirmation from server... " << endl;
+    cout << "Awaiting confirmation from webserver... " << endl;
 }
 
 void Client::close_webserver()
@@ -44,13 +44,11 @@ void Client::close_webserver()
     close(client);
 }
 
-ssize_t Client::transmit(const char *message, char *packet)
+ssize_t Client::transmit(const char *request, char *packet)
 {
     // Send http request to server
-    send(client, message, strlen(message), 0);
+    send(client, request, strlen(request), 0);
     cout << "Message sent from client..." << endl;
-
-    // cout << message << endl;
 
     // Recive binary data into buffer
     bzero((char *)buffer, sizeof(buffer));
@@ -62,7 +60,7 @@ ssize_t Client::transmit(const char *message, char *packet)
 
     if (size < 0)
     {
-        fprintf(stderr, "%d: Unable to recieve data from server.\n", errno);
+        fprintf(stderr, "%d: Unable to recieve data from webserver.\n", errno);
         close(client);
     }
 

@@ -17,12 +17,12 @@ public:
     Server();
     ~Server();
 
-    std::string get_request();
+    void get_request(char* request);
     void transmit(const char* packet, ssize_t const& size);
     bool contains_image(const char* packet);
     int sendall(int socket, const char* packet, int *len);
 private:
-    char buffer[8192];
+    char buffer[20000];
     struct sockaddr_in address;
     int listening, browser;
     socklen_t addr_size{};

@@ -37,45 +37,31 @@ Server::~Server()
     close(listening);
 }
 
-string Server::get_request()
+void Server::get_request(char *request)
 {
-    string request{};
     browser = accept(listening, (struct sockaddr *)&address, &addr_size);
     if (browser < 0)
         throw logic_error{"Error on accepting... "};
+        
+    //bzero((char *)buffer, sizeof(buffer));
+    if (recv(browser, buffer, sizeof(buffer), 0) < 0)
+    {
+        throw logic_error{"Read failed... "};
+    }
 
-    int read = recv(browser, buffer, sizeof(buffer), 0);
-    request = buffer;
-    return request;
+    // cout << buffer << endl;
+    strcpy(request, buffer);
 }
 
-void Server::transmit(const char* packet, ssize_t const& size)
+void Server::transmit(const char *packet, ssize_t const &size)
 {
-        // Send full packet
+    // Send full packet
     if (send(browser, packet, size, MSG_WAITALL) < 0)
         throw logic_error{"Send failed"};
 
     // cout << packet << endl;
     std::cout << "Packet sent..." << std::endl;
 }
-
-
-
-// bool Server::contains_image(const char *packet)
-// {
-//     stringstream ss{packet};
-//     string buffer{};
-//     const string image{"image/jpeg"};
-
-//     // contains image?
-//     while (getline(ss, buffer))
-//     {
-//         auto start_it{search(buffer.begin(), buffer.end(), image.begin(), image.end())};
-//         if (start_it != buffer.end())
-//             return true; // It does!
-//     }
-//     return false;
-// }
 
 // int Server::sendall(int socket, const char *packet, int *len)
 // {
