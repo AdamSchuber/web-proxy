@@ -23,6 +23,7 @@ private:
     std::string ip;
     struct sockaddr_in address;
     socklen_t addr_size;
+    int one{1};
 };
 
 #endif /*CLIENT_H*/

@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <vector>
 
-#define PORT 8080
+#define PORT 1234
 
 class Server
 {

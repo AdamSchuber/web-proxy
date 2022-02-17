@@ -17,6 +17,8 @@ Client::Client()
     if ((client = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw logic_error{"Socket creation error..."};
 
+    // setsockopt(client, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
+
     cout << "Client socket has been created... " << endl;
 
     // Set ivp and port number
