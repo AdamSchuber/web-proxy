@@ -34,9 +34,11 @@ int main()
             {
                 // Decode IP-address
                 server.get_request(request);
-                image = handle_if_image(request);
+                // image = handle_if_image(request);
                 address = get_address(request);
                 ip = get_ip_from_address(address.c_str());
+
+                cout << request << endl;
 
                 // Initiate client with decoded information until valid address
                 client.connect_to_webserver(ip);
@@ -53,11 +55,13 @@ int main()
         ssize_t size{client.transmit(request, packet)};
 
         // Modifies return packet
-        if (!image)
-        {
-            modify_packet(packet, "Stockholm", "Linkoping");
-            modify_packet(packet, "Smiley", "Trolly");
-        }
+        // if (!image)
+        // {
+        //     modify_packet(packet, "Stockholm", "Linkoping");
+        //     modify_packet(packet, "Smiley", "Trolly");
+        // }
+
+        cout << packet << endl;
 
         // Send packet to browser from proxy-server
         if (is_ok(packet) || is_not_modified(packet))
@@ -72,6 +76,11 @@ bool handle_if_image(char *request)
 {
     const char *smiley{"smiley.jpg"};
     const char *trolly{"trolly.jpg"};
+    // const char *stockholm{"Stockholm-spring.jpg"};
+    const char *stockholm{"Linkoping-spring.jpg"};
+    const char *linkoping{"http://naturkartan-images.imgix.net/image/upload/jv1xkiprxn1fuvlg2amg/1408440053.jpg"};
+
+    bool val{false};
     int tmp{};
     while (true)
     {
@@ -85,11 +94,50 @@ bool handle_if_image(char *request)
         else
         {
             if (tmp == 0)
-                return false;
-            return true;
+            {
+                val = false;
+            }
+            else
+            {
+                val = true;
+            }
+            break;
         }
     }
-    return false;
+    tmp = 0;
+    while (true)
+    {
+        char *linkoping_ptr = strstr(request, stockholm);
+        if (linkoping_ptr != NULL)
+        {
+            ++tmp;
+            string new_request{"GET "};
+            new_request += linkoping;
+            new_request += " HTTP/1.1 \n";
+            new_request += "Host: naturkartan-images.imgix.net \n";
+            new_request += "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0 \n";
+            new_request += "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8 \n";
+            new_request += "Accept-Language: sv-SE,sv;q=0.8,en-US;q=0.5,en;q=0.3 \n";
+            new_request += "Accept-Encoding: gzip, deflate \n";
+            new_request += "Connection: keep-alive \n";
+            new_request += "Upgrade-Insecure-Requests: 1 \n \n";
+            
+            strcpy(request, new_request.c_str());
+        }
+        else
+        {
+            if (tmp == 0)
+            {
+                val = false;
+            }
+            else
+            {
+                val = true;
+            }
+            break;
+        }
+    }
+    return val;
 }
 
 void modify_packet(char *packet, const char *old_word, const char *new_word)
@@ -99,6 +147,7 @@ void modify_packet(char *packet, const char *old_word, const char *new_word)
         char *packet_ptr = strstr(packet, old_word);
         if (packet_ptr != NULL)
         {
+
             for (int i{}; i < strlen(old_word); i++)
                 packet_ptr[i] = new_word[i];
         }

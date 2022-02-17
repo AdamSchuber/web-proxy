@@ -35,6 +35,7 @@ Server::Server()
 Server::~Server()
 {
     close(listening);
+    close(browser);
 }
 
 void Server::get_request(char *request)
@@ -43,13 +44,11 @@ void Server::get_request(char *request)
     if (browser < 0)
         throw logic_error{"Error on accepting... "};
         
-    //bzero((char *)buffer, sizeof(buffer));
     if (recv(browser, buffer, sizeof(buffer), 0) < 0)
     {
         throw logic_error{"Read failed... "};
     }
 
-    // cout << buffer << endl;
     strcpy(request, buffer);
 }
 
