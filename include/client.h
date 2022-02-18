@@ -8,12 +8,12 @@
 #include <iostream>
 #include <arpa/inet.h>
 #include <stdexcept>
-#include <vector>
 
 class Client
 {
 public:
     Client();
+
     ssize_t transmit(const char* message, char* packet);
     void connect_to_webserver(std::string const& ip);
     void close_webserver();
@@ -23,7 +23,6 @@ private:
     std::string ip;
     struct sockaddr_in address;
     socklen_t addr_size;
-    int one{1};
 };
 
 #endif /*CLIENT_H*/

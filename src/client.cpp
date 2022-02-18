@@ -6,18 +6,15 @@
 #include <iostream>
 #include <arpa/inet.h>
 #include <stdexcept>
-#include <vector> //temporär
-#include <sstream>
 
 using namespace std;
 
 Client::Client()
     : client{}, address{}, addr_size{}, ip{}
 {
+    // Creates socket with binary stream
     if ((client = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw logic_error{"Socket creation error..."};
-
-    // setsockopt(client, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(int));
 
     cout << "Client socket has been created... " << endl;
 
@@ -59,10 +56,7 @@ ssize_t Client::transmit(const char *request, char *packet)
     memcpy(packet, buffer, size);
 
     if (size < 0)
-    {
         fprintf(stderr, "%d: Unable to recieve data from webserver.\n", errno);
-        close(client);
-    }
 
     cout << "Message received to client..." << endl;
     return size;

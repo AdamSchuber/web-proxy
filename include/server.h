@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <iostream>
 #include <stdexcept>
-#include <vector>
 
 #define PORT 1234
 
@@ -20,7 +19,6 @@ public:
     void get_request(char* request);
     void transmit(const char* packet, ssize_t const& size);
     bool contains_image(const char* packet);
-    int sendall(int socket, const char* packet, int *len);
 private:
     char buffer[20000];
     struct sockaddr_in address;

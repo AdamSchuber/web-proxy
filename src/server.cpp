@@ -5,15 +5,13 @@
 #include <unistd.h>
 #include <iostream>
 #include <stdexcept>
-#include <sstream>
-#include <algorithm>
-#include <iterator>
 
 using namespace std;
 
 Server::Server()
     : address{}, listening{}, browser{}, addr_size{sizeof(address)}
 {
+    // Creates listening socket
     if ((listening = socket(AF_INET, SOCK_STREAM, 0)) < 0)
         throw logic_error{"Error stablishing socket..."};
 
@@ -44,11 +42,11 @@ void Server::get_request(char *request)
     if (browser < 0)
         throw logic_error{"Error on accepting... "};
         
+    // Recives request from browser
     if (recv(browser, buffer, sizeof(buffer), 0) < 0)
-    {
         throw logic_error{"Read failed... "};
-    }
 
+    // Copies buffer to request
     strcpy(request, buffer);
 }
 
@@ -58,28 +56,5 @@ void Server::transmit(const char *packet, ssize_t const &size)
     if (send(browser, packet, size, MSG_WAITALL) < 0)
         throw logic_error{"Send failed"};
 
-    // cout << packet << endl;
-    std::cout << "Packet sent..." << std::endl;
+    cout << "Packet sent..." << endl;
 }
-
-// int Server::sendall(int socket, const char *packet, int *len)
-// {
-//     int total = 0;        // how many bytes we've sent
-//     int bytesleft = *len; // how many we have left to send
-//     int n;
-
-//     while (total < *len)
-//     {
-//         n = send(socket, packet + total, bytesleft, 0);
-//         if (n == -1)
-//         {
-//             break;
-//         }
-//         total += n;
-//         bytesleft -= n;
-//     }
-
-//     *len = total; // return number actually sent here
-
-//     return n == -1 ? -1 : 0; // return -1 on failure, 0 on success
-// }
